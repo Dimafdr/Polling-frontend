@@ -1,42 +1,54 @@
-// TODO: write code here
+/* eslint-disable no-console */
+/* eslint-disable arrow-parens */
+/* eslint-disable arrow-body-style */
+/* eslint-disable prefer-template */
+import { ajax } from 'rxjs/ajax';
+import { switchMap, map, catchError } from 'rxjs/operators';
+import { interval, of } from 'rxjs';
 
-import { fromEvent, of, Observable } from 'rxjs';
-import { 
-  debounceTime, pluck, switchMap, map, catchError, filter 
-} from 'rxjs/operators';
-
-function getRequest(url) {
-  return new Observable((observer) => {
-    const controller = new AbortController();
-
-    fetch(url, {
-      signal: controller.signal,
-    })
-      .then(res => res.json())
-      .then((data) => {
-        observer.next(data);
-        observer.complete();
-      })
-      .catch(err => observer.error(err));
-
-    return () => controller.abort();
+const api = 'http://localhost:7070/api/messages';
+const form = document.querySelector('.messages');
+const cutString = str => {
+  return str.length > 15 ? str.slice(0, 15) + '...' : str;
+};
+function postMessage(messages) {
+  form.innerHTML = '';
+  messages.forEach((message) => {
+    const subject = cutString(message.subject);
+    const time = new Date(message.received);
+    const result = time.toLocaleString('ru-Ru', {
+      year: '2-digit',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    result.replace(/[,%]/g, '');
+    const text = `<div class="message">
+      <p>${message.from}</p>
+      <p>${subject}</p>
+      <p>${result}</p>
+      </div>`;
+    form.insertAdjacentHTML('afterbegin', text);
   });
 }
-
-const api = 'http://localhost:7070/api';
-const input = document.getElementById('email');
-fromEvent(input, 'input')
+const sub = interval(1000)
   .pipe(
-    debounceTime(100),
-    pluck('target', 'value'),
-    filter(value => !!value),
-    switchMap(value => getRequest(`${api}/check-email?email=${value}`).pipe(
-      map(data => data.available),
-      catchError(() => of(false)),
-    )),
+    switchMap(() => {
+      return ajax.getJSON(api).pipe(
+        map(messages => messages.messages),
+        catchError(error => {
+          console.log('error: ', error);
+          return of(error);
+        }),
+      );
+    }),
   )
-  .subscribe((value) => {
-    input.classList.remove('valid');
-    input.classList.remove('error');
-    input.classList.add(value ? 'valid' : 'error');
+  .subscribe((messages) => {
+    postMessage(messages);
   });
+setTimeout(() => {
+  sub.unsubscribe();
+  const text = '<p class="text">Новых сообщений нет</p>';
+  form.insertAdjacentHTML('beforebegin', text);
+}, 5000);

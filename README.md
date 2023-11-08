@@ -1,6 +1,8 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/vxbqwvl4n47l1gnb?svg=true)](https://ci.appveyor.com/project/Dimafdr/polling-frontend)
 
+[GitHubPage](https://daritat.github.io/ahj-rxjs-frontend/)
 
-# 11. Домашнее задание к лекции «RxJS»
+# Домашнее задание к занятию "11. RxJS"
 
 Правила сдачи задания:
 
@@ -9,11 +11,12 @@
 3. В README.md должен быть размещён бейджик сборки и ссылка на Github Pages
 4. В качестве результата присылайте проверяющему ссылки на ваши GitHub-проекты
 5. Авто-тесты писать не требуется
-6. Серверная часть должна быть выложена на Heroku (для 1 и 2 задачи, для 3 задачи серверная часть не требуется)
+---
+**6. (со звездочкой, пункт не обязателен для выполнения)** Серверная часть должна быть выложена на сервере. Вы можете использовать сервер [Vercel](https://vercel.com/docs/concepts/git) (для 1 и 2 задачи, для 3 задачи серверная часть не требуется)
 
 ---
 
-## 11.1 Polling
+## Polling
 
 ### Легенда
 
@@ -23,7 +26,7 @@
 
 #### Серверная часть
 
-Реализуйте простой REST endpoint `/messages/unread`, который возвращает непрочитанные сообщения. Для генерации случайных данных можете воспользоваться библиотекой [faker](https://www.npmjs.com/package/faker).
+Реализуйте простой REST endpoint `/messages/unread`, который возвращает непрочитанные сообщения. Для генерации случайных данных можете воспользоваться библиотекой [faker](https://www.npmjs.com/package/@faker-js/faker).
 
 Формат выдаваемых сообщений:
 ```json
@@ -37,7 +40,7 @@
       "subject": "Hello from Anya",
       "body": "Long message body here" ,
       "received": 1553108200
-    },
+    }
     {
       "id": "<uuid>",
       "from": "alex@petrov",

@@ -1,6 +1,6 @@
 image: Ubuntu1804  # образ для сборки
 
-stack: node 13  # окружение
+stack: node 10  # окружение
 
 branches:
   only:
@@ -9,7 +9,6 @@ branches:
 cache: node_modules  # кеширование
 
 install:
-  - npm install rxjs 
   - npm install  # команда установки зависимостей
 
 build: off  # отключаем встроенную в appveyor систему сборки
@@ -18,7 +17,7 @@ build_script:
   - npm run build   # команда сборки
 
 test_script:
-  - npm run lint && npm test  # скрипт тестирования
+  - npm run lint # скрипт тестирования
 
 deploy_script:  # скрипт развёртывания
   - git config --global credential.helper store

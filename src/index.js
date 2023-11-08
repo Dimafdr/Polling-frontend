@@ -1,8 +1,5 @@
-import './css/styles.css';
-import main from './js/main';
+import './css/style.css';
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', main);
-} else {
-  main();
-}
+import './js/app';
+
+// TODO: write your code in app.js
