@@ -1,7 +1,9 @@
 // TODO: write code here
 
 import { fromEvent, of, Observable } from 'rxjs';
-import { debounceTime, pluck, switchMap, map, catchError, filter } from 'rxjs/operators';
+import { 
+  debounceTime, pluck, switchMap, map, catchError, filter 
+} from 'rxjs/operators';
 
 function getRequest(url) {
   return new Observable((observer) => {
